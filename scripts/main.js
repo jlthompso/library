@@ -2,8 +2,19 @@ let library = [];
 const table = document.querySelector("tbody");
 const form = document.querySelector("#fAddBook");
 
-addBookToLibrary("title1", "author1", 50, false);
-addBookToLibrary("title2", "author2", 65, true);
+if (storageAvailable('localStorage')) {
+    if (!localStorage.getItem("library")) {
+        storeLibrary(library);
+    } 
+    else {
+        library = JSON.parse(localStorage.getItem("library"));
+        console.log(library);
+    }
+}
+else {
+    alert("Library will not persist if browser is closed.");
+}
+
 render();
 
 form.addEventListener("submit", function(e) {
@@ -43,6 +54,7 @@ function render() {
         let status = row.insertCell(3);
         let remove = row.insertCell(4);
         title.innerHTML = book.title;
+        title.className = "title";
         author.innerHTML = book.author;
         pages.innerHTML = book.numPages;
         let removeButton = document.createElement("button");
@@ -53,6 +65,7 @@ function render() {
         removeButton.addEventListener("click", function() {
             let idx = this.id.charAt(this.id.length - 1);
             library.splice(Number(idx), 1);
+            storeLibrary(library);
             render();
         });
         let changeStatusButton = document.createElement("button");
@@ -62,7 +75,8 @@ function render() {
         changeStatusButton.addEventListener("click", function() {
             let idx = this.id.charAt(this.id.length - 1);
             let b = library[idx];
-            b.toggleReadStatus();
+            b.isRead = !b.isRead;
+            storeLibrary(library);
             b.isRead ? this.innerHTML = "Yes" : this.innerHTML = "No";
         });
         status.appendChild(changeStatusButton);
@@ -75,16 +89,43 @@ function Book(title, author, numPages, isRead) {
     this.author = author;
     this.numPages = numPages;
     this.isRead = isRead; // false == not read
-    this.info = function() {
-        let s;
-        this.isRead ? s = "read" : s = "not read yet";
-        return `${title} by ${author}, ${numPages} pages, ${s}`;
-    }
-    this.toggleReadStatus = function() {
-        this.isRead = !this.isRead;
-    }
 }
 
 function addBookToLibrary(title, author, numPages, isRead) {
     library.push(new Book(title, author, numPages, isRead));
+    storeLibrary(library);
+}
+
+function storeLibrary(library) {
+    if (storageAvailable('localStorage')) {
+        localStorage.setItem("library", JSON.stringify(library));
+    }
+    else {
+        console.log("Library changes will not be saved if browser is closed!");
+    }
+}
+
+function storageAvailable(type) {
+    var storage;
+    try {
+        storage = window[type];
+        var x = '__storage_test__';
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+    }
+    catch(e) {
+        return e instanceof DOMException && (
+            // everything except Firefox
+            e.code === 22 ||
+            // Firefox
+            e.code === 1014 ||
+            // test name field too, because code might not be present
+            // everything except Firefox
+            e.name === 'QuotaExceededError' ||
+            // Firefox
+            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            // acknowledge QuotaExceededError only if there's something already stored
+            (storage && storage.length !== 0);
+    }
 }
