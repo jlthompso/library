@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Javascript Library</title>
+        <link href="styles/style.css" rel="stylesheet">
+    </head>
+    <body>
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Num. Pages</th>
+                    <th>Read?</th>
+                    <th>Remove Book</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <form id="fAddBook" method="POST">
+            <label for="fTitle">Title:</label><br>
+            <input type="text" id="fTitle" name="fTitle"><br>
+            <label for="fAuthor">Author:</label><br>
+            <input type="text" id="fAuthor" name="fAuthor"><br>
+            <label for="fPages">Number of Pages:</label><br>
+            <input type="text" id="fPages" name="fPages"><br>
+            <input type="radio" id="fIsRead" name="fIsRead" value="true">
+            <label for="fIsRead">Read</label><br>
+            <input type="radio" id="fIsNotRead" name="fIsRead" value="true">
+            <label for="fIsNotRead">Not Read</label><br>
+            <input type="submit" value="Add Book">
+        </form>
+        <script src="scripts/main.js"></script>
+    </body>
+</html>

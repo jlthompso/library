@@ -1,0 +1,22 @@
+table {
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 5px;
+    text-align: center;
+}
+
+#addBtn {
+    position: relative;
+    margin-top: 10px;
+}
+
+form {
+    position: relative;
+    margin-top: 10px;
+}
