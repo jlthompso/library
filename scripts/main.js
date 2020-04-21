@@ -84,11 +84,13 @@ function render() {
     });
 }
 
-function Book(title, author, numPages, isRead) {
-    this.title = title;
-    this.author = author;
-    this.numPages = numPages;
-    this.isRead = isRead; // false == not read
+class Book {
+    constructor(title, author, numPages, isRead) {
+        this.title = title;
+        this.author = author;
+        this.numPages = numPages;
+        this.isRead = isRead; // false == not read
+    }
 }
 
 function addBookToLibrary(title, author, numPages, isRead) {
